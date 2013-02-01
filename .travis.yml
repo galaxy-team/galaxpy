@@ -1,0 +1,9 @@
+language: python
+python:
+   - "3.3"
+# command to install the dependancies
+install: 
+   - "sudo apt-get install python3-dev"
+before_script: 
+   - "git submodule update --init"
+script: "python3 setup.py build"
