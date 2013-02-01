@@ -21,7 +21,9 @@ file named "LICENSE.txt".
 */
 
 #include <Python.h>
-#include <galaxy_error.hpp>
+#include <libjupiter.hpp>
+#include <vector>
+#include <cstdint>
 
 extern "C"
 {
@@ -58,9 +60,9 @@ static PyObject * jupiter_assemble(PyObject *self, PyObject *args)
     PyObject * bytes = PyList_New(length);
 
     for(int i = 0; i < length; i++) {
-        if(PyList_SetItem(bytes, i, PyLong_FromLong(bytes[i])) < 0) {
+        if(PyList_SetItem(bytes, i, PyLong_FromLong(object_code[i])) < 0) {
             Py_DECREF(bytes);
-            return -1;
+            return NULL;
         }
     }
 
