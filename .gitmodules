@@ -1,9 +1,9 @@
-[submodule "jupiter"]
-	path = jupiter
+[submodule "lib/jupiter"]
+	path = lib/jupiter
 	url = https://github.com/galaxy-team/jupiter.git
-[submodule "pluto"]
-	path = pluto
+[submodule "lib/pluto"]
+	path = lib/pluto
 	url = https://github.com/galaxy-team/pluto.git
-[submodule "saturn"]
-	path = saturn
+[submodule "lib/saturn"]
+	path = lib/saturn
 	url = https://github.com/galaxy-team/saturn.git
