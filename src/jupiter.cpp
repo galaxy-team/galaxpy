@@ -28,8 +28,7 @@ file named "LICENSE-LGPL.txt".
 extern "C"
 {
     static PyObject * jupiter_assemble(PyObject *self, PyObject *args);
-    // not supported yet:
-    // static PyObject * jupiter_disassemble(PyObject *self, PyObject *args);
+    static PyObject * jupiter_disassemble(PyObject *self, PyObject *args);
 }
 
 static PyObject *JupiterError;
@@ -124,7 +123,6 @@ static PyObject * jupiter_disassemble(PyObject *self, PyObject *args)
         PyObject * line = PyUnicode_FromString(lines[i].c_str());
         if(line == NULL) {
             Py_DECREF(lines_list);
-            Py_DECREF(line);
             return NULL;
         }
 
