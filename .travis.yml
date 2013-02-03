@@ -7,8 +7,11 @@ language: python
 python:
    - "3.3"
 # command to install the dependancies
-install: 
-   - "sudo apt-get install python3-dev"
+install:
+    - "sudo apt-add-repository -y \"deb http://ubuntu.mirror.cambrium.nl/ubuntu/ quantal main\""
+    - "sudo apt-get update"
+    - "sudo apt-get install gcc g++ build-essential python3-dev"
 before_script: 
    - "git submodule update --init"
+   - "gcc --version"
 script: "python3 setup.py build"
