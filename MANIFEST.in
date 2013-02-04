@@ -1,2 +1,2 @@
-recursive-include . *.txt
-recursive-include lib *.cpp *.hpp
+include *.txt
+recursive-include lib *.txt *.cpp *.hpp
