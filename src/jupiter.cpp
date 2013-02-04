@@ -25,18 +25,21 @@ file named "LICENSE-LGPL.txt".
 #include <vector>
 #include <cstdint>
 
+#include "object_file.hpp"
+
 extern "C"
 {
     static PyObject * jupiter_assemble(PyObject *self, PyObject *args);
-    static PyObject * jupiter_disassemble(PyObject *self, PyObject *args);
+//    static PyObject * jupiter_disassemble(PyObject *self, PyObject *args);
 }
 
 static PyObject *JupiterError;
 
+
 static PyObject * jupiter_assemble(PyObject *self, PyObject *args)
 {
     const char *assembly_code;
-    std::vector<std::uint16_t> object_code;
+    galaxy::jupiter::object_file cpp_object;
 
     if (!PyArg_ParseTuple(args, "s", &assembly_code))
         return NULL;
@@ -44,33 +47,72 @@ static PyObject * jupiter_assemble(PyObject *self, PyObject *args)
     try {
         std::string asm_code = assembly_code;
 
-	object_code = galaxy::jupiter::assemble(asm_code.begin(),
-	                                        asm_code.end());
+	cpp_object = galaxy::jupiter::assemble(asm_code.begin(),
+	                                       asm_code.end());
       // change this to galaxy::exception when it is added to libjupiter
     } catch (std::exception& e) {
         PyErr_SetString(JupiterError, "Assembly failed");
         return NULL;
     }
 
-    // convert std::vector to Python list
+    // Create an object_file to store results in
+    object_file *obj_file = (object_file*)PyObject_CallObject((PyObject *)&object_file_type, NULL);
 
-    int length = object_code.size();
-
-    PyObject * bytes = PyList_New(length);
-    if(bytes == NULL) {
+    if(obj_file == NULL) {
         return NULL;
     }
 
+    // convert std::unordered_map to Python dict
+
+    PyObject * e_labels = obj_file->exported_labels;
+
+    for(auto it = cpp_object.exported_labels.begin(); it != cpp_object.exported_labels.end(); ++it) {
+        if(PyDict_SetItem(e_labels, PyUnicode_FromString(it->first.c_str()), PyLong_FromLong(it->second)) < 0) {
+            Py_DECREF(obj_file);
+            return NULL;
+        }
+    }
+
+    // convert std::unordered_set to Python list
+
+    PyObject * u_labels = obj_file->used_labels;
+
+    for(auto it = cpp_object.used_labels.begin(); it != cpp_object.used_labels.end(); ++it) {
+        if(PyList_Append(u_labels, PyLong_FromLong(*it)) < 0) {
+            Py_DECREF(obj_file);
+            return NULL;
+        }
+    }
+
+    // convert std::unordered_map to Python dict
+
+    PyObject * i_labels = obj_file->imported_labels;
+
+    for(auto it = cpp_object.imported_labels.begin(); it != cpp_object.imported_labels.end(); ++it) {
+        if(PyDict_SetItem(i_labels, PyLong_FromLong(it->first), PyUnicode_FromString(it->second.c_str())) < 0) {
+            Py_DECREF(obj_file);
+            return NULL;
+        }
+    }
+
+    // convert std::vector to Python list
+
+    int length = cpp_object.object_code.size();
+
+    // I'm fairly sure there's no way for this to be NULL
+    PyObject * bytes = obj_file->object_code;
+
     for(int i = 0; i < length; i++) {
-        if(PyList_SetItem(bytes, i, PyLong_FromLong(object_code[i])) < 0) {
+        if(PyList_SetItem(bytes, i, PyLong_FromLong(cpp_object.object_code[i])) < 0) {
             Py_DECREF(bytes);
             return NULL;
         }
     }
 
-    return bytes;
+    return (PyObject *)obj_file;
 }
 
+/*
 static PyObject * jupiter_disassemble(PyObject *self, PyObject *args)
 {
     PyObject * bytes = PyTuple_GetItem(args, 0);
@@ -134,19 +176,20 @@ static PyObject * jupiter_disassemble(PyObject *self, PyObject *args)
 
     return lines_list;
 }
+*/
 
 static PyMethodDef JupiterMethods[] = {
     {"assemble", jupiter_assemble, METH_VARARGS,
      "Assemble the given code into DCPU-16 machine language."},
-    {"disassemble", jupiter_disassemble, METH_VARARGS,
-     "Disassemble the given machine code into assembly language."},
+/*    {"disassemble", jupiter_disassemble, METH_VARARGS,
+     "Disassemble the given machine code into assembly language."}, */
     {NULL, NULL, 0, NULL}        // Sentinel
 };
 
 static struct PyModuleDef jupitermodule = {
     PyModuleDef_HEAD_INIT,
     "jupiter",    // name of module
-    NULL,  // module documentation
+    "Module that provides an interface with the jupiter assembler",
     -1,           // module keeps state in global variables
     JupiterMethods
 };
@@ -163,6 +206,13 @@ PyInit_jupiter(void)
     JupiterError = PyErr_NewException("jupiter.error", NULL, NULL);
     Py_INCREF(JupiterError);
     PyModule_AddObject(m, "error", JupiterError);
+
+    if (PyType_Ready(&object_file_type) < 0)
+        return NULL;
+
+    Py_INCREF(&object_file_type);
+    PyModule_AddObject(m, "object_file", (PyObject *)&object_file_type);
+
     return m;
 }
 
