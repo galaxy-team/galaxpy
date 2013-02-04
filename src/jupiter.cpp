@@ -33,7 +33,6 @@ extern "C"
 
 static PyObject *JupiterError;
 
-// TODO: accept both a string or a sequence of strings
 static PyObject * jupiter_assemble(PyObject *self, PyObject *args)
 {
     const char *assembly_code;
