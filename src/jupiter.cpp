@@ -15,7 +15,7 @@ GNU Lesser General Public License for more details.
 You should have received a copy of the GNU Lesser General Public License
 along with galaxpy.  If not, see <http://www.gnu.org/licenses/>.
 
-Your copy of the GNU General Public License should be in the
+Your copy of the GNU Lesser General Public License should be in the
 file named "LICENSE-LGPL.txt".
 
 */
