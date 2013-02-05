@@ -77,9 +77,9 @@ object_file_init(object_file *self, PyObject *args, PyObject *kwds)
     PyObject *exported_labels=NULL, *used_labels=NULL,
              *imported_labels=NULL, *object_code=NULL, *tmp;
 
-    static char *kwlist[] = {"exported_labels", "used_labels",
-                             "imported_labels", "object_code",
-                             NULL};
+    static const char *kwlist[] = {"exported_labels", "used_labels",
+                                   "imported_labels", "object_code",
+                                   NULL};
 
     if(! PyArg_ParseTupleAndKeywords(args, kwds, "|OOOO", kwlist,
                                      &exported_labels, &used_labels,
@@ -121,14 +121,14 @@ object_file_init(object_file *self, PyObject *args, PyObject *kwds)
 }
 
 static PyMemberDef object_file_members[] = {
-    {"exported_labels", T_OBJECT_EX, offsetof(object_file, exported_labels), 0,
-     "Dictionary mapping labels to declaration points"},
-    {"used_labels", T_OBJECT_EX, offsetof(object_file, used_labels), 0,
-     "List of positions where non-imported labels are used"},
-    {"imported_labels", T_OBJECT_EX, offsetof(object_file, imported_labels), 0,
-     "Dictionary mapping positions to labels used in those positions"},
-    {"object_code", T_OBJECT_EX, offsetof(object_file, object_code), 0,
-     "The machine code"},
+    {const_cast<char *>("exported_labels"), T_OBJECT_EX, offsetof(object_file, exported_labels), 0,
+     const_cast<char *>("Dictionary mapping labels to declaration points")},
+    {const_cast<char *>("used_labels"), T_OBJECT_EX, offsetof(object_file, used_labels), 0,
+     const_cast<char *>("List of positions where non-imported labels are used")},
+    {const_cast<char *>("imported_labels"), T_OBJECT_EX, offsetof(object_file, imported_labels), 0,
+     const_cast<char *>("Dictionary mapping positions to labels used in those positions")},
+    {const_cast<char *>("object_code"), T_OBJECT_EX, offsetof(object_file, object_code), 0,
+     const_cast<char *>("The machine code")},
     {NULL}  /* Sentinel */
 };
 
