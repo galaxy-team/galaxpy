@@ -10,7 +10,7 @@ struct object_file {
     PyObject *exported_labels;
 
     /**
-     * List of positions where non-imported labels are used
+     * Set containing positions where non-imported labels are used
      */
     PyObject *used_labels;
 
@@ -48,7 +48,7 @@ object_file_new(PyTypeObject *type, PyObject *args, PyObject *kwds)
             return NULL;
         }
 
-        self->used_labels = PyList_New(0);
+        self->used_labels = PySet_New(0);
         if(self->used_labels == NULL) {
             Py_DECREF(self);
             return NULL;
@@ -78,7 +78,7 @@ object_file_init(object_file *self, PyObject *args, PyObject *kwds)
              *imported_labels=NULL, *object_code=NULL, *tmp;
 
     static char *kwlist[] = {"exported_labels", "used_labels",
-                                   "imported_labels", "object_code",
+                             "imported_labels", "object_code",
                                    NULL};
 
     if(! PyArg_ParseTupleAndKeywords(args, kwds, "|OOOO", kwlist,
