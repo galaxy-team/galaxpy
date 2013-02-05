@@ -73,12 +73,12 @@ static PyObject * jupiter_assemble(PyObject *self, PyObject *args)
         }
     }
 
-    // convert std::unordered_set to Python list
+    // convert std::unordered_set to Python set
 
     PyObject * u_labels = obj_file->used_labels;
 
     for(auto it = cpp_object.used_labels.begin(); it != cpp_object.used_labels.end(); ++it) {
-        if(PyList_Append(u_labels, PyLong_FromLong(*it)) < 0) {
+        if(PySet_Add(u_labels, PyLong_FromLong(*it)) < 0) {
             Py_DECREF(obj_file);
             return NULL;
         }
