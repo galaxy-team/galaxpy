@@ -77,7 +77,7 @@ object_file_init(object_file *self, PyObject *args, PyObject *kwds)
     PyObject *exported_labels=NULL, *used_labels=NULL,
              *imported_labels=NULL, *object_code=NULL, *tmp;
 
-    static const char *kwlist[] = {"exported_labels", "used_labels",
+    static char *kwlist[] = {"exported_labels", "used_labels",
                                    "imported_labels", "object_code",
                                    NULL};
 
