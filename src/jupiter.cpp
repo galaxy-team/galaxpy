@@ -25,7 +25,7 @@ file named "LICENSE-LGPL.txt".
 #include <vector>
 #include <cstdint>
 
-#include "object_file.hpp"
+#include "asteroid.hpp"
 
 extern "C"
 {
@@ -39,7 +39,7 @@ static PyObject *JupiterError;
 static PyObject * jupiter_assemble(PyObject *self, PyObject *args)
 {
     const char *assembly_code;
-    galaxy::jupiter::object_file cpp_object;
+    galaxy::asteroid cpp_object;
 
     if (!PyArg_ParseTuple(args, "s", &assembly_code))
         return NULL;
@@ -55,8 +55,8 @@ static PyObject * jupiter_assemble(PyObject *self, PyObject *args)
         return NULL;
     }
 
-    // Create an object_file to store results in
-    object_file *obj_file = (object_file*)PyObject_CallObject((PyObject *)&object_file_type, NULL);
+    // Create an asteroid to store results in
+    asteroid *obj_file = (asteroid*)PyObject_CallObject((PyObject *)&asteroid_type, NULL);
 
     if(obj_file == NULL) {
         return NULL;
@@ -207,11 +207,11 @@ PyInit_jupiter(void)
     Py_INCREF(JupiterError);
     PyModule_AddObject(m, "error", JupiterError);
 
-    if (PyType_Ready(&object_file_type) < 0)
+    if (PyType_Ready(&asteroid_type) < 0)
         return NULL;
 
-    Py_INCREF(&object_file_type);
-    PyModule_AddObject(m, "object_file", (PyObject *)&object_file_type);
+    Py_INCREF(&asteroid_type);
+    PyModule_AddObject(m, "asteroid", (PyObject *)&asteroid_type);
 
     return m;
 }

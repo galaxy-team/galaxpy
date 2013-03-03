@@ -2,7 +2,7 @@ from distutils.core import setup, Extension
 
 jupiter = Extension('jupiter',
                     include_dirs = ['lib/jupiter/src/lib',
-                                    'lib/jupiter/lib/asteroid'],
+                                    'lib/asteroid'],
                     sources = ['src/jupiter.cpp', 'lib/jupiter/src/lib/libjupiter.cpp'])
 
 jupiter.extra_compile_args = ['--std=c++11']
