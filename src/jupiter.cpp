@@ -204,10 +204,14 @@ PyInit_jupiter(void)
         return NULL;
 
     JupiterError = PyErr_NewException("jupiter.error", NULL, NULL);
+    if (JupiterError == NULL)
+        return NULL;
+
     Py_INCREF(JupiterError);
     PyModule_AddObject(m, "error", JupiterError);
 
     if (PyType_Ready(&asteroid_type) < 0)
+        Py_DECREF(JupiterError);
         return NULL;
 
     Py_INCREF(&asteroid_type);
