@@ -3,13 +3,13 @@ import unittest
 
 # unit test subunits
 import tests.test_saturn
-import tests.test_jupiter
+#import tests.test_jupiter
 
 
 def main():
     loader = unittest.TestLoader()
     suite = loader.loadTestsFromModule(tests.test_saturn)
-    suite.addTests(loader.loadTestsFromModule(tests.test_jupiter))
+#    suite.addTests(loader.loadTestsFromModule(tests.test_jupiter))
     runner = unittest.TextTestRunner(verbosity=2)
     # wait a second or so for things to start
     time.sleep(2)
