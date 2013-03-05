@@ -34,6 +34,251 @@ file named "LICENSE-LGPL.txt".
 static PyObject *InvalidOpcodeError;
 static PyObject *QueueOverflowError;
 
+struct Device {
+    PyObject_HEAD
+
+    /// the device the object is wrapping
+    galaxy::saturn::device* hw;
+};
+
+static void
+Device_dealloc(Device* self)
+{
+    delete self->hw;
+    Py_TYPE(self)->tp_free((PyObject*)self);
+}
+
+static PyObject *
+Device_new(PyTypeObject *type, PyObject *args, PyObject *kwds)
+{
+    Device *self;
+
+    self = (Device *)type->tp_alloc(type, 0);
+
+    return (PyObject *)self;
+}
+
+static int
+Device_init(Device *self, PyObject *args, PyObject *kwds)
+{
+    // init the device here because of magic
+    self->hw = (galaxy::saturn::device *)new PyDevice((PyObject *)self);
+    return 0;
+}
+
+static PyObject *
+Device_getid(Device *self, void *closure)
+{
+    PyObject *id = PyLong_FromLong(self->hw->id);
+    if (id == NULL) {
+        return NULL;
+    }
+
+    return id;
+}
+
+static int
+Device_setid(Device *self, PyObject *value, void *closure)
+{
+    if (value == NULL) {
+        PyErr_SetString(PyExc_TypeError, "Cannot delete the first attribute");
+        return -1;
+    }
+
+    if (! PyLong_Check(value)) {
+        PyErr_SetString(PyExc_TypeError,
+                        "The first attribute value must be an integer");
+        return -1;
+    }
+
+    self->hw->id = PyLong_AsLong(value);
+
+    return 0;
+}
+
+static PyObject *
+Device_getmanufacturer(Device *self, void *closure)
+{
+    PyObject *manufacturer = PyLong_FromLong(self->hw->manufacturer);
+    if (manufacturer == NULL) {
+        return NULL;
+    }
+
+    return manufacturer;
+}
+
+static int
+Device_setmanufacturer(Device *self, PyObject *value, void *closure)
+{
+    if (value == NULL) {
+        PyErr_SetString(PyExc_TypeError, "Cannot delete the first attribute");
+        return -1;
+    }
+
+    if (! PyLong_Check(value)) {
+        PyErr_SetString(PyExc_TypeError,
+                        "The first attribute value must be an integer");
+        return -1;
+    }
+
+    self->hw->manufacturer = PyLong_AsLong(value);
+
+    return 0;
+}
+
+static PyObject *
+Device_getversion(Device *self, void *closure)
+{
+    PyObject *version = PyLong_FromLong(self->hw->version);
+    if (version == NULL) {
+        return NULL;
+    }
+
+    return version;
+}
+
+static int
+Device_setversion(Device *self, PyObject *value, void *closure)
+{
+    if (value == NULL) {
+        PyErr_SetString(PyExc_TypeError, "Cannot delete the first attribute");
+        return -1;
+    }
+
+    if (! PyLong_Check(value)) {
+        PyErr_SetString(PyExc_TypeError,
+                        "The first attribute value must be an integer");
+        return -1;
+    }
+
+    self->hw->version = PyLong_AsLong(value);
+
+    return 0;
+}
+
+static PyObject *
+Device_getname(Device *self, void *closure)
+{
+    PyObject *name = PyUnicode_FromString(self->hw->name.c_str());
+    if (name == NULL) {
+        return NULL;
+    }
+
+    return name;
+}
+
+static int
+Device_setname(Device *self, PyObject *value, void *closure)
+{
+    if (value == NULL) {
+        PyErr_SetString(PyExc_TypeError, "Cannot delete the first attribute");
+        return -1;
+    }
+
+    if (! PyUnicode_Check(value)) {
+        PyErr_SetString(PyExc_TypeError,
+                        "The first attribute value must be a string");
+        return -1;
+    }
+
+    PyObject * str = PyUnicode_AsASCIIString(value);
+    if (str == NULL)
+        return NULL;
+
+    char * name = PyBytes_AsString(str);
+    if (name == NULL)
+        return NULL;
+
+    self->hw->name = name;
+    return 0;
+}
+
+static PyGetSetDef Device_getseters[] = {
+    {"id",
+     (getter)Device_getid, (setter)Device_setid,
+     "the id number of the device",
+     NULL},
+    {"manufacturer",
+     (getter)Device_getmanufacturer, (setter)Device_setmanufacturer,
+     "the manufacturer of the device",
+     NULL},
+    {"version",
+     (getter)Device_getversion, (setter)Device_setversion,
+     "the version number of the device",
+     NULL},
+    {"name",
+     (getter)Device_getname, (setter)Device_setname,
+     "the name of the device",
+     NULL},
+    {NULL}  /* Sentinel */
+};
+
+static PyObject *
+Device_interrupt(Device* self)
+{
+    PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
+    return NULL;
+}
+
+static PyObject *
+Device_cycle(Device* self)
+{
+    PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
+    return NULL;
+}
+
+static PyMethodDef Device_methods[] = {
+    {"interrupt", (PyCFunction)Device_interrupt, METH_NOARGS,
+     "Send a hardware interrupt to the device"
+    },
+    {"cycle", (PyCFunction)Device_cycle, METH_NOARGS,
+     "Triggered before each cycle of the DCPU"
+    },
+    {NULL} /* Sentinel */
+};
+
+static PyTypeObject DeviceType = {
+    PyVarObject_HEAD_INIT(NULL, 0)
+    "saturn.device",           /* tp_name */
+    sizeof(Device),            /* tp_basicsize */
+    0,                         /* tp_itemsize */
+    (destructor)Device_dealloc,/* tp_dealloc */
+    0,                         /* tp_print */
+    0,                         /* tp_getattr */
+    0,                         /* tp_setattr */
+    0,                         /* tp_reserved */
+    0,                         /* tp_repr */
+    0,                         /* tp_as_number */
+    0,                         /* tp_as_sequence */
+    0,                         /* tp_as_mapping */
+    0,                         /* tp_hash  */
+    0,                         /* tp_call */
+    0,                         /* tp_str */
+    0,                         /* tp_getattro */
+    0,                         /* tp_setattro */
+    0,                         /* tp_as_buffer */
+    Py_TPFLAGS_DEFAULT |
+        Py_TPFLAGS_BASETYPE,   /* tp_flags */
+    "hardware devices",        /* tp_doc */
+    0,                         /* tp_traverse */
+    0,                         /* tp_clear */
+    0,                         /* tp_richcompare */
+    0,                         /* tp_weaklistoffset */
+    0,                         /* tp_iter */
+    0,                         /* tp_iternext */
+    Device_methods,            /* tp_methods */
+    0,                         /* tp_members */
+    Device_getseters,          /* tp_getset */
+    0,                         /* tp_base */
+    0,                         /* tp_dict */
+    0,                         /* tp_descr_get */
+    0,                         /* tp_descr_set */
+    0,                         /* tp_dictoffset */
+    (initproc)Device_init,     /* tp_init */
+    0,                         /* tp_alloc */
+    Device_new,                /* tp_new */
+};
+
 struct DCPU {
     PyObject_HEAD
 
@@ -517,7 +762,25 @@ DCPU_interrupt(DCPU* self, PyObject *args)
     return Py_None;
 }
 
-// attach_device
+static PyObject *
+DCPU_attach_device(DCPU* self, PyObject *args)
+{
+    PyObject * dev = PyTuple_GetItem(args, 0);
+
+    if (dev == NULL) {
+        return NULL;
+    }
+
+    if (Py_TYPE(dev) != &DeviceType && !PyType_IsSubtype(Py_TYPE(dev), &DeviceType)) {
+        PyErr_SetString(PyExc_TypeError, "Argument must be an instance of Device or an instance of a subclass of Device");
+        return NULL;
+    }
+
+    Device* hw = (Device *) dev;
+    self->cpu->attach_device(hw->hw);
+
+    Py_RETURN_NONE;
+}
 
 
 static PyObject *
@@ -578,6 +841,9 @@ static PyMethodDef DCPU_methods[] = {
     },
     {"interrupt", (PyCFunction)DCPU_interrupt, METH_VARARGS,
      "Trigger an interrupt on the DCPU"
+    },
+    {"attach_device", (PyCFunction)DCPU_attach_device, METH_VARARGS,
+     "Attach a device to the DCPU"
     },
     {"flash", (PyCFunction)DCPU_flash, METH_VARARGS,
      "Flash the DCPU's memory with a sequence of integers"
@@ -697,12 +963,18 @@ PyInit_saturn(void)
     if (PyType_Ready(&DCPUType) < 0)
         return NULL;
 
+    if (PyType_Ready(&DeviceType) < 0)
+        return NULL;
+
     m = PyModule_Create(&saturnmodule);
     if (m == NULL)
         return NULL;
 
     Py_INCREF(&DCPUType);
     PyModule_AddObject(m, "dcpu", (PyObject *)&DCPUType);
+
+    Py_INCREF(&DeviceType);
+    PyModule_AddObject(m, "device", (PyObject *)&DeviceType);
 
     InvalidOpcodeError = PyErr_NewException("saturn.InvalidOpcodeError", NULL, NULL);
     if (InvalidOpcodeError == NULL)
