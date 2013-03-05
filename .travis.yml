@@ -16,4 +16,6 @@ before_script:
    - "gcc --version"
 notifications:
   irc: "irc.freenode.net#0x10c-galaxy"
-script: "python3 setup.py build"
+
+script: "python3 setup.py install"
+after_script: "python3 run_tests.py"
