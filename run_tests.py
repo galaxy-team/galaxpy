@@ -11,8 +11,7 @@ def main():
     suite = loader.loadTestsFromModule(tests.test_saturn)
 #    suite.addTests(loader.loadTestsFromModule(tests.test_jupiter))
     runner = unittest.TextTestRunner(verbosity=2)
-    # wait a second or so for things to start
-    time.sleep(2)
+    
     end = runner.run(suite)
     if len(end.errors) > 1:
         print('{} errors appear to have occured.'.format(len(end.errors)))
