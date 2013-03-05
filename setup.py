@@ -9,7 +9,7 @@ jupiter.extra_compile_args = ['--std=c++11']
 saturn = Extension('saturn',
                     include_dirs = ['lib/saturn/src/lib',
                                     'lib/saturn/src/lib/device'],
-                    sources = ['src/saturn.cpp', 'lib/saturn/src/lib/libsaturn.cpp'])
+                    sources = ['src/saturn.cpp', 'src/pydevice.cpp', 'lib/saturn/src/lib/libsaturn.cpp'])
 saturn.extra_compile_args = ['--std=c++11']
 
 

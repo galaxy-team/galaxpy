@@ -22,9 +22,14 @@ file named "LICENSE-LGPL.txt".
 
 #include <Python.h>
 #include <structmember.h>
+
 #include <libsaturn.hpp>
 #include <invalid_opcode.hpp>
 #include <queue_overflow.hpp>
+
+#include "pydevice.hpp"
+
+#include <device.hpp>
 
 static PyObject *InvalidOpcodeError;
 static PyObject *QueueOverflowError;
@@ -52,7 +57,7 @@ DCPU_new(PyTypeObject *type, PyObject *args, PyObject *kwds)
     if (self != NULL) {
         self->cpu = new galaxy::saturn::dcpu();
     }
-    
+
     return (PyObject *)self;
 }
 
@@ -600,7 +605,7 @@ DCPU_item (DCPU *self, Py_ssize_t i)
     PyObject *val = PyLong_FromLong(self->cpu->ram[i]);
     if (val == NULL)
         return NULL;
-    
+
     return val;
 }
 
@@ -702,7 +707,7 @@ PyInit_saturn(void)
     InvalidOpcodeError = PyErr_NewException("saturn.InvalidOpcodeError", NULL, NULL);
     if (InvalidOpcodeError == NULL)
         return NULL;
-    
+
     Py_INCREF(InvalidOpcodeError);
     PyModule_AddObject(m, "InvalidOpcodeError", InvalidOpcodeError);
 
