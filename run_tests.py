@@ -5,13 +5,14 @@ import unittest
 
 # unit test subunits
 import tests.test_saturn
+import tests.test_devices
 #import tests.test_jupiter
 
 
 def main():
     loader = unittest.TestLoader()
     suite = loader.loadTestsFromModule(tests.test_saturn)
-#    suite.addTests(loader.loadTestsFromModule(tests.test_jupiter))
+    suite.addTests(loader.loadTestsFromModule(tests.test_devices))
     runner = unittest.TextTestRunner(verbosity=2)
     
     end = runner.run(suite)
