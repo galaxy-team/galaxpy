@@ -7,3 +7,6 @@
 [submodule "lib/asteroid"]
 	path = lib/asteroid
 	url = https://github.com/galaxy-team/asteroid.git
+[submodule "lib/libsaturn"]
+	path = lib/libsaturn
+	url = git@github.com:galaxy-team/libsaturn.git

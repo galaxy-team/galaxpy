@@ -25,7 +25,6 @@ file named "LICENSE-LGPL.txt".
 
 #include <Python.h>
 #include <libsaturn.hpp>
-#include <device.hpp>
 #include <cstdint>
 
 /**

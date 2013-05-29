@@ -1,15 +1,14 @@
 from distutils.core import setup, Extension
-
+"""
 jupiter = Extension('jupiter',
                     include_dirs = ['lib/jupiter/src/lib',
                                     'lib/asteroid'],
                     sources = ['src/jupiter.cpp', 'lib/jupiter/src/lib/libjupiter.cpp'])
 jupiter.extra_compile_args = ['--std=c++11']
-
+"""
 saturn = Extension('saturn',
-                    include_dirs = ['lib/saturn/src/lib',
-                                    'lib/saturn/src/lib/device'],
-                    sources = ['src/saturn.cpp', 'src/pydevice.cpp', 'lib/saturn/src/lib/libsaturn.cpp'])
+                    include_dirs = ['lib/libsaturn/include'],
+                    sources = ['src/saturn.cpp', 'src/pydevice.cpp'])#, 'lib/saturn/src/lib/libsaturn.cpp'])
 saturn.extra_compile_args = ['--std=c++11']
 
 
@@ -21,4 +20,6 @@ setup (name = 'galaxpy',
        maintainer_email = 'beckl.d.413@isg.edu.sa',
        url = 'http://www.github.com/galaxy-team/galaxpy',
        ext_package='galaxpy',
-       ext_modules = [jupiter, saturn])
+       ext_modules = [
+           #jupiter,
+           saturn])

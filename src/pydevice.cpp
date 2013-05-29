@@ -22,7 +22,6 @@ file named "LICENSE-LGPL.txt".
 
 #include <Python.h>
 #include <libsaturn.hpp>
-#include <device.hpp>
 #include "pydevice.hpp"
 
 void PyDevice::interrupt()

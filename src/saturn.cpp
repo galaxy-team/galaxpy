@@ -29,8 +29,6 @@ file named "LICENSE-LGPL.txt".
 
 #include "pydevice.hpp"
 
-#include <device.hpp>
-
 static PyObject *InvalidOpcodeError;
 static PyObject *QueueOverflowError;
 
