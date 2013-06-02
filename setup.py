@@ -1,6 +1,6 @@
 from distutils.core import setup, Extension
 
-compile_args = ['-std=c++11', '-Wwrite-strings', '-Wsign-compare']
+compile_args = ['-std=c++11', '-Wwrite-strings', '-Wsign-compare', '-fPIC']
 
 jupiter = Extension('jupiter',
                     include_dirs = ['lib/jupiter/src/lib',
