@@ -10,6 +10,8 @@ jupiter.extra_compile_args = compile_args
 
 saturn = Extension('saturn',
                     include_dirs = ['lib/libsaturn/include'],
+                    libraries = ['saturn'],
+                    library_dirs = ['lib/libsaturn/lib'],
                     sources = ['src/saturn.cpp', 'src/pydevice.cpp'])
 saturn.extra_compile_args = compile_args
 
