@@ -51,7 +51,7 @@ static PyObject * jupiter_assemble(PyObject *self, PyObject *args)
 	                                       asm_code.end());
       // change this to galaxy::exception when it is added to libjupiter
     } catch (std::exception& e) {
-        PyErr_SetString(JupiterError, "Assembly failed");
+        PyErr_SetString(JupiterError, e.what());
         return NULL;
     }
 
