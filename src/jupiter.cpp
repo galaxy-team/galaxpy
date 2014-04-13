@@ -103,7 +103,7 @@ static PyObject * jupiter_assemble(PyObject *self, PyObject *args)
     PyObject * bytes = obj_file->object_code;
 
     for(int i = 0; i < length; i++) {
-        if(PyList_SetItem(bytes, i, PyLong_FromLong(cpp_object.object_code[i])) < 0) {
+        if(PyList_Append(bytes, PyLong_FromLong(cpp_object.object_code[i])) < 0) {
             Py_DECREF(bytes);
             return NULL;
         }
