@@ -32,11 +32,11 @@ file named "LICENSE-LGPL.txt".
  */
 class PyDevice : public galaxy::saturn::device {
     protected:
-        PyObject * dev;
+        PyObject & dev;
 
     public:
         /// the PyDevice will wrap the dev python object
-        PyDevice(PyObject * dev) : galaxy::saturn::device(0,0,0,""), dev(dev) {}
+        PyDevice(PyObject & dev) : galaxy::saturn::device(0,0,0,""), dev(dev) {}
 
         virtual void interrupt();
         virtual void cycle();
