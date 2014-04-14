@@ -60,7 +60,7 @@ static int
 Device_init(Device *self, PyObject *args, PyObject *kwds)
 {
     // init the device here because of magic
-    self->hw = (galaxy::saturn::device *)new PyDevice((PyObject *&)*self);
+    self->hw = (galaxy::saturn::device *)new PyDevice((PyObject &)*self);
     return 0;
 }
 
