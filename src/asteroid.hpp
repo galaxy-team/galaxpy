@@ -77,9 +77,11 @@ asteroid_init(asteroid *self, PyObject *args, PyObject *kwds)
     PyObject *exported_labels=NULL, *used_labels=NULL,
              *imported_labels=NULL, *object_code=NULL, *tmp;
 
-    static char *kwlist[] = {"exported_labels", "used_labels",
-                             "imported_labels", "object_code",
-                                   NULL};
+    static char *kwlist[] = {
+        "exported_labels", "used_labels",
+        "imported_labels", "object_code",
+        NULL
+    };
 
     if(! PyArg_ParseTupleAndKeywords(args, kwds, "|OOOO", kwlist,
                                      &exported_labels, &used_labels,
@@ -135,9 +137,9 @@ static PyMemberDef asteroid_members[] = {
 static PyTypeObject asteroid_type = {
     PyVarObject_HEAD_INIT(NULL, 0)
     "galaxy.jupiter.asteroid",     /* tp_name */
-    sizeof(asteroid),              /* tp_basicsize */
+    sizeof(asteroid),                 /* tp_basicsize */
     0,                                /* tp_itemsize */
-    (destructor)asteroid_dealloc,  /* tp_dealloc */
+    (destructor)asteroid_dealloc,     /* tp_dealloc */
     0,                                /* tp_print */
     0,                                /* tp_getattr */
     0,                                /* tp_setattr */
