@@ -42,7 +42,6 @@ struct Device {
 static void
 Device_dealloc(Device* self)
 {
-    delete self->hw;
     Py_TYPE(self)->tp_free((PyObject*)self);
 }
 
