@@ -136,7 +136,7 @@ static PyMemberDef asteroid_members[] = {
 
 static PyTypeObject asteroid_type = {
     PyVarObject_HEAD_INIT(NULL, 0)
-    "galaxy.jupiter.asteroid",     /* tp_name */
+    "galaxy.asteroid",        /* tp_name */
     sizeof(asteroid),                 /* tp_basicsize */
     0,                                /* tp_itemsize */
     (destructor)asteroid_dealloc,     /* tp_dealloc */
@@ -175,3 +175,35 @@ static PyTypeObject asteroid_type = {
     0,                                /* tp_alloc */
     asteroid_new,                     /* tp_new */
 };
+
+
+static struct PyModuleDef asteroidmodule = {
+    PyModuleDef_HEAD_INIT,
+    "asteroid",    // name of module
+    "Module that provides a Python version of Galaxy's asteroid",
+    -1,            // module keeps state in global variables
+    NULL, NULL, NULL, NULL, NULL
+};
+
+PyMODINIT_FUNC
+PyInit_asteroid(void)
+{
+    PyObject* m;
+
+    asteroid_type.tp_new = PyType_GenericNew;
+    if (PyType_Ready(&asteroid_type) < 0) {
+        return NULL;
+    }
+
+    m = PyModule_Create(&asteroidmodule);
+    if (m == NULL) {
+        return NULL;
+    }
+
+    Py_INCREF(&asteroid_type);
+    if (PyModule_AddObject(m, "Asteroid", (PyObject *)&asteroid_type) < 0) {
+        return NULL;
+    }
+
+    return m;
+}

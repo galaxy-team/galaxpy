@@ -25,6 +25,7 @@ file named "LICENSE-LGPL.txt".
 #include <vector>
 #include <cstdint>
 
+#include "libasteroid.hpp"
 #include "asteroid.hpp"
 
 extern "C"

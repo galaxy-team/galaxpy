@@ -32,6 +32,13 @@ saturn = Extension('saturn',
     extra_link_args=link_args
 )
 
+asteroid = Extension('asteroid',
+    include_dirs=['lib/asteroid'],
+    sources=['src/asteroid.cpp'],
+    extra_compile_args=compile_args,
+    extra_link_args=link_args,
+    language='c++'
+)
 
 settings = {
     'name': 'galaxpy',
@@ -44,7 +51,8 @@ settings = {
     'ext_package': 'galaxpy',
     'ext_modules': [
         jupiter,
-        saturn
+        saturn,
+        asteroid
     ]
 }
 
