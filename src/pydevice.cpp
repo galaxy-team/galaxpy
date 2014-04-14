@@ -26,7 +26,7 @@ file named "LICENSE-LGPL.txt".
 
 void PyDevice::interrupt()
 {
-    PyObject * pfunc = PyObject_GetAttrString(dev, "interrupt");
+    PyObject * pfunc = PyObject_GetAttrString(&dev, "interrupt");
     if (pfunc && PyCallable_Check(pfunc))
         PyObject_CallObject(pfunc, NULL);
 
@@ -35,7 +35,7 @@ void PyDevice::interrupt()
 
 void PyDevice::cycle()
 {
-    PyObject * pfunc = PyObject_GetAttrString(dev, "cycle");
+    PyObject * pfunc = PyObject_GetAttrString(&dev, "cycle");
     if (pfunc && PyCallable_Check(pfunc))
         PyObject_CallObject(pfunc, NULL);
 
