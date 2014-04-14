@@ -1,16 +1,20 @@
 import unittest
 from galaxpy import saturn
 
-class Test_Devices(unittest.TestCase):
+
+class TestDevice(saturn.device):
+    def interrupt(self):
+        print("Interrupted")
+
+    def cycle(self):
+        print("Cycled")
+
+
+class TestDevices(unittest.TestCase):
     def setUp(self):
         self.cpu = saturn.dcpu()
 
-        class test_device(saturn.device):
-            def interrupt(self):
-                print("Interrupted")
-            def cycle(self):
-                print("Cycled")
-        self.device = test_device()
+        self.device = TestDevice()
  
     def test_attach(self):
         self.cpu.attach_device(self.device)
@@ -29,17 +33,20 @@ class Test_Devices(unittest.TestCase):
         self.device.manufacturer = 0x313373
         self.assertEqual(
             self.device.manufacturer,
-            0x313373)
-       
+            0x313373
+        )
+
         self.device.name = "Flux Capacitor"
         self.assertEqual(
             self.device.name,
-            "Flux Capacitor")
+            "Flux Capacitor"
+        )
 
         self.device.version = 0x300
         self.assertEqual(
             self.device.version,
-            0x300)
+            0x300
+        )
 
 def main():
     unittest.main()

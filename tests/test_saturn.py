@@ -1,7 +1,7 @@
 import unittest
 from galaxpy import saturn
 
-class Test_Saturn(unittest.TestCase):
+class TestSaturn(unittest.TestCase):
     def setUp(self):
         self.cpu = saturn.dcpu()
 
@@ -19,13 +19,16 @@ class Test_Saturn(unittest.TestCase):
 
         self.cpu.flash(opcodes)
 
-        self.assertTrue(list(self.cpu)[:len(opcodes)] == opcodes)
+        self.assertEquals(
+            list(self.cpu)[:len(opcodes)],
+            opcodes
+        )
 
         self.cpu.reset()
         
 
 def main():
-    unittest2.main()
+    unittest.main()
 
 if __name__ == "__main__":
     main()
