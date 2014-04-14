@@ -1,6 +1,14 @@
 from distutils.core import setup, Extension
 
-compile_args = ['-std=c++11', '-Wwrite-strings', '-Wsign-compare', '-fPIC']
+compile_args = [
+    '-std=c++11',
+    '-Wwrite-strings',
+    '-Wsign-compare',
+    '-fPIC',
+    '-pedantic',
+    '-Wall',
+    '-Wextra'
+]
 link_args = ['-fPIC']
 
 jupiter = Extension('jupiter',
