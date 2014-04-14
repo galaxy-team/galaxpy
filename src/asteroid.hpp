@@ -1,7 +1,7 @@
 #include <Python.h>
 #include <structmember.h>
 
-struct asteroid {
+typedef struct {
     PyObject_HEAD
 
     /**
@@ -23,7 +23,7 @@ struct asteroid {
      * The machine code
      */
     PyObject *object_code;
-};
+} asteroid;
 
 static void
 asteroid_dealloc(asteroid* self)
