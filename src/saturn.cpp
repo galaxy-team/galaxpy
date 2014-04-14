@@ -180,13 +180,14 @@ Device_setname(Device *self, PyObject *value, void *closure)
 
     PyObject * str = PyUnicode_AsASCIIString(value);
     if (str == NULL)
-        return NULL;
+        return -1;
 
     char * name = PyBytes_AsString(str);
     if (name == NULL)
-        return NULL;
+        return -1;
 
     self->hw->name = name;
+
     return 0;
 }
 
