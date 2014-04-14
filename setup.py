@@ -16,6 +16,8 @@ jupiter = Extension('jupiter',
         'lib/jupiter/src/lib',
         'lib/asteroid'
     ],
+    libraries=['jupiter'],
+    library_dirs=['lib/jupiter/lib', 'lib/jupiter/build/lib'],
     sources=['src/jupiter.cpp', 'lib/jupiter/src/lib/libjupiter.cpp'],
     extra_compile_args=compile_args,
     extra_link_args=link_args
