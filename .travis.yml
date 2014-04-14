@@ -15,6 +15,7 @@ before_script:
    - "git submodule update --init"
    - "gcc --version"
    - "cd lib/libsaturn && cmake . -DCMAKE_CXX_FLAGS=-fPIC && make libsaturn && cd ../.."
+   - "cd lib/jupiter && cmake . -DCMAKE_CXX_FLAGS=-fPIC && make libjupiter && cd ../.."
 notifications:
   irc: "irc.freenode.net#0x10c-galaxy"
 
