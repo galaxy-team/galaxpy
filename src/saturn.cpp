@@ -958,15 +958,18 @@ PyInit_saturn(void)
 {
     PyObject* m;
 
-    if (PyType_Ready(&DCPUType) < 0)
+    if (PyType_Ready(&DCPUType) < 0) {
         return NULL;
+    }
 
-    if (PyType_Ready(&DeviceType) < 0)
+    if (PyType_Ready(&DeviceType) < 0) {
         return NULL;
+    }
 
     m = PyModule_Create(&saturnmodule);
-    if (m == NULL)
+    if (m == NULL) {
         return NULL;
+    }
 
     Py_INCREF(&DCPUType);
     if (PyModule_AddObject(m, "dcpu", (PyObject *)&DCPUType) < 0) {
@@ -979,8 +982,9 @@ PyInit_saturn(void)
     }
 
     InvalidOpcodeError = PyErr_NewException("saturn.InvalidOpcodeError", NULL, NULL);
-    if (InvalidOpcodeError == NULL)
+    if (InvalidOpcodeError == NULL) {
         return NULL;
+    }
 
     Py_INCREF(InvalidOpcodeError);
     if (PyModule_AddObject(m, "InvalidOpcodeError", InvalidOpcodeError) < 0) {
