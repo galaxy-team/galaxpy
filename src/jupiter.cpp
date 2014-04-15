@@ -216,10 +216,6 @@ PyInit_jupiter(void)
         return NULL;
     }
 
-    Py_INCREF(&asteroid_type);
-    if (PyModule_AddObject(m, "asteroid", (PyObject *)&asteroid_type) < 0)
-        return NULL;
-
     return m;
 }
 
