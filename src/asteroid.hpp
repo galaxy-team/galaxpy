@@ -190,7 +190,6 @@ PyInit_asteroid(void)
 {
     PyObject* m;
 
-    asteroid_type.tp_new = PyType_GenericNew;
     if (PyType_Ready(&asteroid_type) < 0) {
         return NULL;
     }
