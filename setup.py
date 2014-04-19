@@ -1,13 +1,9 @@
 from distutils.core import setup, Extension
 
-from os.path import join, dirname, abspath, exists
-from os import chdir
+from os.path import join, dirname, abspath
 
-current_dir = dirname(abspath(__name__))
-path = join(current_dir, '..')
-chdir(path)
-
-default_lib_dir = join(current_dir, 'lib')
+current_dir = dirname(abspath(__file__))
+default_lib_dir = abspath(join(current_dir, 'build', 'lib'))
 
 compile_args = [
     '-std=c++11',
@@ -20,7 +16,23 @@ compile_args = [
 ]
 link_args = ['-fPIC']
 
-jupiter = Extension('jupiter',
+
+def mend(ex):
+    for attr in ['library_dirs', 'include_dirs', 'sources']:
+        value = getattr(ex, attr)
+
+        if isinstance(value, list):
+            value = [join(current_dir, val) for val in value]
+            setattr(ex, attr, value)
+    return ex
+
+
+def RelativeExtension(*args, **kwargs):
+    return mend(Extension(*args, **kwargs))
+
+
+jupiter = RelativeExtension(
+    'jupiter',
     include_dirs=[
         'lib/jupiter/src/lib',
         'lib/asteroid'
@@ -32,7 +44,8 @@ jupiter = Extension('jupiter',
     extra_link_args=link_args
 )
 
-saturn = Extension('saturn',
+saturn = RelativeExtension(
+    'saturn',
     include_dirs=['lib/libsaturn/include'],
     libraries=['saturn'],
     library_dirs=[default_lib_dir, 'lib/libsaturn/lib'],
@@ -41,7 +54,8 @@ saturn = Extension('saturn',
     extra_link_args=link_args
 )
 
-asteroid = Extension('asteroid',
+asteroid = RelativeExtension(
+    'asteroid',
     include_dirs=['lib/asteroid'],
     sources=['src/asteroid.cpp'],
     extra_compile_args=compile_args,
