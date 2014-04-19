@@ -44,6 +44,19 @@ jupiter = RelativeExtension(
     extra_link_args=link_args
 )
 
+pluto = RelativeExtension(
+    'pluto',
+    include_dirs=[
+        'lib/pluto/src/lib',
+        'lib/asteroid'
+    ],
+    libraries=['pluto'],
+    library_dirs=[default_lib_dir, 'lib/pluto/lib', 'lib/pluto/build/lib'],
+    sources=['src/pluto.cpp', 'lib/pluto/src/lib/libpluto.cpp'],
+    extra_compile_args=compile_args,
+    extra_link_args=link_args
+)
+
 saturn = RelativeExtension(
     'saturn',
     include_dirs=['lib/libsaturn/include'],
@@ -75,7 +88,8 @@ settings = {
     'ext_modules': [
         jupiter,
         saturn,
-        asteroid
+        asteroid,
+        pluto
     ]
 }
 
