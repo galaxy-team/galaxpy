@@ -83,9 +83,9 @@ asteroid_init(asteroid *self, PyObject *args, PyObject *kwds)
         NULL
     };
 
-    if(! PyArg_ParseTupleAndKeywords(args, kwds, "|OOOO", kwlist,
-                                     &exported_labels, &used_labels,
-                                     &imported_labels, &object_code))
+    if(!PyArg_ParseTupleAndKeywords(args, kwds, "|OOOO", kwlist,
+                                    &exported_labels, &used_labels,
+                                    &imported_labels, &object_code))
         return -1;
 
     if(exported_labels) {

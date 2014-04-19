@@ -44,7 +44,7 @@ static PyObject * jupiter_assemble(PyObject *self, PyObject *args)
 
     if (!PyArg_ParseTuple(args, "s", &assembly_code))
         return NULL;
-    
+
     try {
         std::string asm_code = assembly_code;
 
@@ -128,7 +128,7 @@ static PyObject * jupiter_disassemble(PyObject *self, PyObject *args)
     }
 
     std::vector<std::uint16_t> object_code;
-    
+
     int length = PySequence_Size(bytes);
     if(length < 0) {
         return NULL;
@@ -139,21 +139,21 @@ static PyObject * jupiter_disassemble(PyObject *self, PyObject *args)
         if(byte == NULL) {
             return NULL;
         }
-        
+
         if(PyNumber_Check(byte) != 1) {
             Py_DECREF(byte);
             PyErr_SetString(PyExc_TypeError, "Non-numeric value in sequence");
             return NULL;
         }
-        
+
         object_code.push_back(PyLong_AsLong(byte));
 	Py_DECREF(byte);
     }
-    
+
     std::vector<std::string> lines;
     lines = galaxy::jupiter::disassemble(object_code.begin(),
                                          object_code.end());
-    
+
     length = lines.size();
 
     PyObject * lines_list = PyList_New(length);
