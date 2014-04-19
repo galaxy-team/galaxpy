@@ -11,6 +11,9 @@ set(OUTPUT ${CMAKE_BINARY_DIR})
 message(STATUS ${OUTPUT})
 
 find_program(PYTHON3 python3)
+if (PYDEBUG)
+    set(PYTHON3 ${PYTHON3}-dbg)
+endif()
 
 EXECUTE_PROCESS(
     COMMAND ${PYTHON3} -c "
@@ -33,16 +36,35 @@ else()
     )
 endif()
 
-set(PREFIX "${PLATFORM}-${ARCHITECTURE}-${PYTHON_VERSION}")
-message(STATUS "Prefix: ${PREFIX}")
-# temp.linux-x86_64-3.3/
+set(POSTFIX "${PLATFORM}-${ARCHITECTURE}-${PYTHON_VERSION}")
 
-add_custom_command(
-    OUTPUT ${OUTPUT}/timestamp ${CMAKE_CURRENT_BINARY_DIR}/lib.${PREFIX}
-    COMMAND ${PYTHON3} ${CMAKE_CURRENT_SOURCE_DIR}/setup.py build
-    COMMAND ${CMAKE_COMMAND} -E touch ${OUTPUT}/timestamp
-    DEPENDS libjupiter libsaturn
+if (PYDEBUG)
+    set(PYDEBUG_POSTFIX "-pydebug")
+endif()
+
+
+FILE(GLOB DEPENDENCIES RELATIVE "${CMAKE_CURRENT_SOURCE_DIR}"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/*")
+
+set(DEPENDENCIES
+    ${CMAKE_CURRENT_SOURCE_DIR}/setup.py
+    ${FILES}
 )
 
-add_custom_target(target ALL DEPENDS ${OUTPUT}/timestamp)
 
+
+
+set(OUTPUT_FILES
+    ${CMAKE_CURRENT_BINARY_DIR}/lib.${POSTFIX}${PYDEBUG_POSTFIX}
+    ${CMAKE_CURRENT_BINARY_DIR}/temp.${POSTFIX}${PYDEBUG_POSTFIX}
+    ${CMAKE_CURRENT_BINARY_DIR}/lib.${POSTFIX}${PYDEBUG_POSTFIX}/__init__.py
+)
+
+add_custom_command(
+    OUTPUT ${OUTPUT_FILES}
+    COMMAND ${CMAKE_COMMAND} -E chdir ${CMAKE_CURRENT_BINARY_DIR}/.. ${PYTHON3} ${CMAKE_CURRENT_SOURCE_DIR}/setup.py build -f
+    COMMAND ${CMAKE_COMMAND} -E touch ${CMAKE_CURRENT_BINARY_DIR}/lib.${POSTFIX}/__init__.py
+    DEPENDS libjupiter libsaturn libpluto ${DEPENDENCIES}
+)
+
+add_custom_target(python_library ALL DEPENDS ${OUTPUT_FILES})
