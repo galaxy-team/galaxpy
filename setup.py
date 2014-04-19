@@ -25,7 +25,7 @@ jupiter = Extension('jupiter',
         'lib/jupiter/src/lib',
         'lib/asteroid'
     ],
-    libraries=['jupiter'],
+    libraries=['jupiter', 'glog'],
     library_dirs=[default_lib_dir, 'lib/jupiter/lib', 'lib/jupiter/build/lib'],
     sources=['src/jupiter.cpp', 'lib/jupiter/src/lib/libjupiter.cpp'],
     extra_compile_args=compile_args,
