@@ -15,7 +15,7 @@ class TestDevices(unittest.TestCase):
         self.cpu = saturn.dcpu()
 
         self.device = TestDevice()
- 
+
     def test_attach(self):
         self.cpu.attach_device(self.device)
         self.cpu.reset()
@@ -29,7 +29,7 @@ class TestDevices(unittest.TestCase):
         self.assertEqual(
             self.device.id,
             0x5555)
-        
+
         self.device.manufacturer = 0x313373
         self.assertEqual(
             self.device.manufacturer,
@@ -47,6 +47,7 @@ class TestDevices(unittest.TestCase):
             self.device.version,
             0x300
         )
+
 
 def main():
     unittest.main()

@@ -3,18 +3,20 @@ import sys
 # unit testing specific imports
 import unittest
 
-# unit test subunits
-import tests.test_saturn
-import tests.test_devices
-#import tests.test_jupiter
+names = [
+    'test_saturn',
+    'test_devices',
+    'test_jupiter',
+    'test_pluto'
+]
+import tests
 
 
 def main():
     loader = unittest.TestLoader()
-    suite = loader.loadTestsFromModule(tests.test_saturn)
-    suite.addTests(loader.loadTestsFromModule(tests.test_devices))
+    suite = loader.loadTestsFromNames(names, module=tests)
     runner = unittest.TextTestRunner(verbosity=2)
-    
+
     end = runner.run(suite)
     if len(end.errors) > 1:
         print('{} errors appear to have occured.'.format(len(end.errors)))
@@ -23,4 +25,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-
