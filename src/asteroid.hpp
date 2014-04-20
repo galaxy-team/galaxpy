@@ -23,10 +23,10 @@ typedef struct {
      * The machine code
      */
     PyObject *object_code;
-} asteroid;
+} asteroid_AsteroidObject;
 
 static void
-asteroid_dealloc(asteroid* self)
+asteroid_dealloc(asteroid_AsteroidObject* self)
 {
     Py_XDECREF(self->exported_labels);
     Py_XDECREF(self->used_labels);
@@ -38,9 +38,9 @@ asteroid_dealloc(asteroid* self)
 static PyObject*
 asteroid_new(PyTypeObject *type, PyObject *args, PyObject *kwds)
 {
-    asteroid *self;
+    asteroid_AsteroidObject *self;
 
-    self = (asteroid *)type->tp_alloc(type, 0);
+    self = (asteroid_AsteroidObject*)type->tp_alloc(type, 0);
     if(self != NULL) {
         self->exported_labels = PyDict_New();
         if(self->exported_labels == NULL) {
@@ -72,7 +72,7 @@ asteroid_new(PyTypeObject *type, PyObject *args, PyObject *kwds)
 }
 
 static int
-asteroid_init(asteroid *self, PyObject *args, PyObject *kwds)
+asteroid_init(asteroid_AsteroidObject *self, PyObject *args, PyObject *kwds)
 {
     PyObject *exported_labels=NULL, *used_labels=NULL,
              *imported_labels=NULL, *object_code=NULL, *tmp;
@@ -123,21 +123,21 @@ asteroid_init(asteroid *self, PyObject *args, PyObject *kwds)
 }
 
 static PyMemberDef asteroid_members[] = {
-    {const_cast<char *>("exported_labels"), T_OBJECT_EX, offsetof(asteroid, exported_labels), 0,
+    {const_cast<char *>("exported_labels"), T_OBJECT_EX, offsetof(asteroid_AsteroidObject, exported_labels), 0,
      const_cast<char *>("Dictionary mapping labels to declaration points")},
-    {const_cast<char *>("used_labels"), T_OBJECT_EX, offsetof(asteroid, used_labels), 0,
+    {const_cast<char *>("used_labels"), T_OBJECT_EX, offsetof(asteroid_AsteroidObject, used_labels), 0,
      const_cast<char *>("List of positions where non-imported labels are used")},
-    {const_cast<char *>("imported_labels"), T_OBJECT_EX, offsetof(asteroid, imported_labels), 0,
+    {const_cast<char *>("imported_labels"), T_OBJECT_EX, offsetof(asteroid_AsteroidObject, imported_labels), 0,
      const_cast<char *>("Dictionary mapping positions to labels used in those positions")},
-    {const_cast<char *>("object_code"), T_OBJECT_EX, offsetof(asteroid, object_code), 0,
+    {const_cast<char *>("object_code"), T_OBJECT_EX, offsetof(asteroid_AsteroidObject, object_code), 0,
      const_cast<char *>("The machine code")},
     {NULL}  /* Sentinel */
 };
 
 static PyTypeObject asteroid_type = {
     PyVarObject_HEAD_INIT(NULL, 0)
-    "galaxy.asteroid",        /* tp_name */
-    sizeof(asteroid),                 /* tp_basicsize */
+    "galaxy.asteroid",                /* tp_name */
+    sizeof(asteroid_AsteroidObject),  /* tp_basicsize */
     0,                                /* tp_itemsize */
     (destructor)asteroid_dealloc,     /* tp_dealloc */
     0,                                /* tp_print */
@@ -176,7 +176,6 @@ static PyTypeObject asteroid_type = {
     asteroid_new,                     /* tp_new */
 };
 
-
 static struct PyModuleDef asteroidmodule = {
     PyModuleDef_HEAD_INIT,
     "asteroid",    // name of module
@@ -184,6 +183,7 @@ static struct PyModuleDef asteroidmodule = {
     -1,            // module keeps state in global variables
     NULL, NULL, NULL, NULL, NULL
 };
+
 
 PyMODINIT_FUNC
 PyInit_asteroid(void)

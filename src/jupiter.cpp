@@ -57,7 +57,7 @@ static PyObject * jupiter_assemble(PyObject *self, PyObject *args)
     }
 
     // Create an asteroid to store results in
-    asteroid *obj_file = (asteroid*)PyObject_CallObject((PyObject *)&asteroid_type, NULL);
+    asteroid_AsteroidObject *obj_file = (asteroid_AsteroidObject*)PyObject_CallObject((PyObject *)&asteroid_type, NULL);
 
     if(obj_file == NULL) {
         return NULL;
