@@ -307,7 +307,9 @@ DCPU_new(PyTypeObject *type, PyObject *args, PyObject *kwds)
 static int
 DCPU_init(DCPU *self, PyObject *args, PyObject *kwds)
 {
-    // nothing to do?
+    if (!PyArg_ParseTuple(args, ""))
+        return -1;
+
     return 0;
 }
 
