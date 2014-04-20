@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 2.8)
 project(galaxpy)
 
+# if a library is going to be linked with a python extension,
+# it needs to be compiled with the -fPIC flag
 set(CMAKE_CXX_FLAGS "-fPIC ${CMAKE_CXX_FLAGS}")
 add_subdirectory(lib/jupiter)
 add_subdirectory(lib/libsaturn)
