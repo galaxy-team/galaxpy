@@ -738,8 +738,7 @@ DCPU_cycle(DCPU* self)
         return NULL;
     }
 
-    Py_INCREF(Py_None);
-    return Py_None;
+    Py_RETURN_NONE;
 }
 
 static PyObject *
@@ -758,8 +757,7 @@ DCPU_interrupt(DCPU* self, PyObject *args)
         return NULL;
     }
 
-    Py_INCREF(Py_None);
-    return Py_None;
+    Py_RETURN_NONE;
 }
 
 static PyObject *
@@ -822,8 +820,7 @@ DCPU_flash(DCPU* self, PyObject *args)
 
     self->cpu->flash(mem.begin(), mem.end());
 
-    Py_INCREF(Py_None);
-    return Py_None;
+    Py_RETURN_NONE;
 }
 
 static PyObject *
@@ -831,8 +828,7 @@ DCPU_reset(DCPU* self)
 {
     self->cpu->reset();
 
-    Py_INCREF(Py_None);
-    return Py_None;
+    Py_RETURN_NONE;
 }
 
 static PyMethodDef DCPU_methods[] = {
